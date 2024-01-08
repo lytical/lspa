@@ -1,0 +1,56 @@
+{
+  "author": {
+    "name": "barry hayles; lytical, inc.",
+    "email": "barry.hayles@lytical.com",
+    "url": "https://www.lytical.com"
+  },
+  "devDependencies": {
+    "@aspnet/signalr": "^1.0.27",
+    "@types/chai": "^4.2.11",
+    "@types/bootstrap": "^5.1.9",
+    "@types/jquery": "^3.3.29",
+    "@types/requirejs": "2.1.32",
+    "@types/sockjs-client": "^1.1.1",
+    "del": "^3.0.0",
+    "gulp": "4.0.2",
+    "gulp-uglify-es": "^3.0.0",
+    "pump": "^3.0.0",
+    "typescript": "^5.3.2"
+  },
+  "description": "client library for building single page web applications using @lytical/lmvc.",
+  "keywords": [
+    "hayles",
+    "lyt",
+    "lyt.service",
+    "lytical",
+    "node",
+    "nodejs",
+    "spa"
+  ],
+  "license": "ISC",
+  "name": "@lytical/lspa",
+  "dependencies": {
+    "@aspnet/signalr": "^1.0.27",
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "@lytical/lmvc": "0.0.2",
+    "@popperjs/core": "^2.11.2",
+    "bootstrap": "^5.1.3",
+    "jquery": "^3.4.1",
+    "requirejs": "2.3.6",
+    "requirejs-text": "2.0.15",
+    "rxjs": "^7.5.1",
+    "sockjs-client": "^1.4.0",
+    "xml-js": "1.6.11"
+  },
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lytical/lspa.git"
+  },
+  "scripts": {
+    "build": "tsc --build&&gulp post_build",
+    "clean": "tsc --build --clean",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.0.0"
+}

@@ -1,0 +1,11 @@
+﻿<div class="d-flex" :class="{'text-info':info,'text-success':success,'text-danger':error}">
+  <div v-if="info">
+    <div class="spinner-border me-2" role="status">
+      <span class="sr-only">processing...</span>
+    </div>
+  </div>
+  <div :class="{'pt-1':info}">
+    <i class="fas me-2" :class="{'fa-check':success,'fa-exclamation-triangle':error,'fa-info':info}"></i>
+    <span v-html="info||success||error"></span>
+  </div>
+</div>

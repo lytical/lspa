@@ -1,0 +1,7 @@
+<div class="mb-3 row" l:class?fi-touched="is_touched" l:class?fi-untouched="is_untouched" l:class?fi-valid="is_valid" l:class?fi-invalid="is_invalid" l:class?fi-dirty="is_dirty" l:class?fi-pristine="is_pristine">
+  <label l:attr?for="for_id" class="col-sm-2 col-form-label text-end" l:class?text-danger="is_touched && is_invalid" l:html="caption"></label>
+  <div class="col-sm-10">
+    <!-- l:content -->
+    <div class="text-danger" l:if="is_touched&&is_invalid" l:html="invalid_msg"></div>
+  </div>
+</div>

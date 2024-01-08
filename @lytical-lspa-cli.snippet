@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- © 2018 lytical, inc. all rights are reserved. lytical® is a registered trademark of lytical, inc. please refer to your license agreement on the use of this file. -->
+<CodeSnippets
+  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.1.0">
+    <Header>
+      <Author>barry hayles, lytical, inc.</Author>
+      <Description>expands @lytical/spa directive statements into a typescript file.</Description>
+      <Shortcut>ld</Shortcut>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>@lytical/spa directive</Title>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>year</ID>
+          <Default>2020</Default>
+          <ToolTip>the copyright year.</ToolTip>
+        </Literal>
+        <Literal Editable="true">
+          <ID>id</ID>
+          <Default>directive_name</Default>
+          <ToolTip>the identifier of the directive.</ToolTip>
+        </Literal>
+      </Declarations>
+      <Code Language="TypeScript">
+        <![CDATA[/* @preserve
+  (c) $year$ lytical, inc. all rights are reserved.
+  lytical(r) is a registered trademark of lytical, inc.
+  please refer to your license agreement on the use of this file.
+*/
+
+import { is_directive, directive, directive_binding } from '@lytical/lspa/directive';
+import { VNode } from 'vue';
+
+@is_directive()
+export class $id$ implements directive {
+  // todo: all methods are optional. implement your desired method(s) and remove the others.
+  bind(el: HTMLElement, binding: directive_binding, vnode: VNode, oldVnode: VNode): void {}
+  inserted(el: HTMLElement, binding: directive_binding, vnode: VNode, oldVnode: VNode): void {}
+  update(el: HTMLElement, binding: directive_binding, vnode: VNode, oldVnode: VNode): void {}
+  componentUpdated(el: HTMLElement, binding: directive_binding, vnode: VNode, oldVnode: VNode): void {}
+  unbind(el: HTMLElement, binding: directive_binding, vnode: VNode, oldVnode: VNode): void {}
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+  <CodeSnippet Format="1.1.0">
+    <Header>
+      <Author>barry hayles, lytical, inc.</Author>
+      <Description>expands @lytical/spa component statements into a typescript file.</Description>
+      <Shortcut>lc</Shortcut>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>@lytical/spa component</Title>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>year</ID>
+          <Default>2020</Default>
+          <ToolTip>the copyright year.</ToolTip>
+        </Literal>
+        <Literal Editable="true">
+          <ID>ns</ID>
+          <Default>namespace</Default>
+          <ToolTip>the namespace of the component.</ToolTip>
+        </Literal>
+        <Literal Editable="true">
+          <ID>id</ID>
+          <Default>component_name</Default>
+          <ToolTip>the identifier of the component.</ToolTip>
+        </Literal>
+      </Declarations>
+      <Code Language="TypeScript">
+        <![CDATA[/* @preserve
+  (c) $year$ lytical, inc. all rights are reserved.
+  lytical(r) is a registered trademark of lytical, inc.
+  please refer to your license agreement on the use of this file.
+*/
+
+import { is_component, component } from '@lytical/lspa/component';
+
+@is_component({
+  html: '$ns$/$id$.html'
+})
+export class $ns$_$id$$end$ extends component {
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+  <CodeSnippet Format="1.1.0">
+    <Header>
+      <Author>barry hayles, lytical, inc.</Author>
+      <Description>expands @lytical/spa form component statements into a typescript file.</Description>
+      <Shortcut>lf</Shortcut>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>@lytical/spa form component</Title>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>year</ID>
+          <Default>2020</Default>
+          <ToolTip>the copyright year.</ToolTip>
+        </Literal>
+        <Literal Editable="true">
+          <ID>ns</ID>
+          <Default>namespace</Default>
+          <ToolTip>the namespace of the component.</ToolTip>
+        </Literal>
+        <Literal Editable="true">
+          <ID>id</ID>
+          <Default>component_name</Default>
+          <ToolTip>the identifier of the component.</ToolTip>
+        </Literal>
+      </Declarations>
+      <Code Language="TypeScript">
+        <![CDATA[/* @preserve
+  (c) $year$ lytical, inc. all rights are reserved.
+  lytical(r) is a registered trademark of lytical, inc.
+  please refer to your license agreement on the use of this file.
+*/
+
+import { is_component } from '@lytical/lspa/component';
+import { form_component } from '@lytical/lspa/form/component';
+
+@is_component({
+  html: '$ns$/$id$.html'
+})
+export class $ns$_$id$$end$ extends form_component {
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
