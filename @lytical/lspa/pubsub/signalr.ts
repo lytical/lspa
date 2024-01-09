@@ -5,7 +5,7 @@
 */
 
 import * as signalr from '@aspnet/signalr';
-import spa_pubsub_svc, { pubsub_topic_id_sock_closed, pubsub_topic_id_sock_opened, pubsub_topic_id_sock_recv } from './svc';
+import spa_pubsub_svc, { pubsub_topic_id_sock_closed, pubsub_topic_id_sock_opened, pubsub_topic_id_sock_recv } from '@lytical/lspa/pubsub/svc';
 
 const max_timeout = 30000; // 30 secs
 

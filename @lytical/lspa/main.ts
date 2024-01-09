@@ -9,7 +9,6 @@ const version = '0.0.0';
 
 function failed(ex: Error) {
   console.error(ex);
-  alert(ex.message);
 }
 
 require(['/api/spa/requirejs-cfg'], (cfg: any) => {
