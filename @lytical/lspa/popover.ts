@@ -4,9 +4,9 @@
   please refer to your license agreement on the use of this file.
 */
 
-import { view } from '@lytical/lmvc/view';
 import type { Observable, SubscriptionLike } from 'rxjs';
 import type { lmvc_scope_t, lmvc_view_t } from '@lytical/lmvc/type';
+import { view } from '@lytical/lmvc/view';
 
 @view()
 export class spa_popover implements lmvc_view_t {
