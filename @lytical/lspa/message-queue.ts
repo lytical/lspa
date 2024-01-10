@@ -23,6 +23,7 @@ export class message_queue {
       else {
         sub[1].complete();
       }
+      delete this.sub[topic];
       return true;
     }
     return false;

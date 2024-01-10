@@ -5,7 +5,7 @@
   please refer to your license agreement on the use of this file.
 */
 
-const version = '0.0.0';
+const version = '0.0.3';
 
 function failed(ex: Error) {
   console.error(ex);
