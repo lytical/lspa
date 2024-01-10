@@ -11,6 +11,7 @@ const _fs = require('fs').promises;
 const _gulp = require('gulp');
 const _path = require('path');
 const _pump = require('pump');
+const _replace = require('gulp-replace');
 const _uglify = require('gulp-uglify-es').default;
 const _util = require('util');
 
@@ -60,6 +61,18 @@ const get_files = async (dir, predicate) => {
     }
   }
   return rt;
+}
+
+exports.pre_build = async () => {
+  const package = await require(_path.resolve('package.json'));
+  const version = package.version.split('.');
+  version.push(Number.parseInt(version.pop()) + 1);
+  let nxt_ver = version.join('.');
+  await _pump(
+    _gulp.src(['package.json', '**/main.ts', '!node_modules/**', '!.dist/**', '!.vscode/**', '!.scripts/**']),
+    _replace(/"version":\s?"[^"]+"/, `"version": "${nxt_ver}"`),
+    _replace(/version\s?=\s?'[^']+'/, `version = '${nxt_ver}'`),
+    _gulp.dest('.'));
 }
 
 exports.post_build = _gulp.series(

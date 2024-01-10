@@ -9,6 +9,7 @@ import type { OperatorFunction } from 'rxjs';
 import 'jquery';
 
 export type spa_util_http_result_t<_t_> = [_t_, JQuery.jqXHR];
+const xsrf_token_pattern = /XSRF\-TOKEN=([^;\s]+)/i;
 
 export class spa_util_http {
   delete<_t_ = unknown>(url: string, data?: unknown, dataType: data_type = 'json', headers?: JQuery.PlainObject) {
@@ -30,12 +31,7 @@ export class spa_util_http {
     });
   }
 
-  static get_xsrf_token(): string | undefined {
-    let rs = /XSRF\-TOKEN=([^;\s]+)/.exec(window.document.cookie);
-    return rs && rs.length > 1 ? rs[1] : undefined;
-  }
-
-  static init(version: string, client_id: string) {
+  static init(version: string) {
     $(document)
       .ajaxError((_evt, xhr, _opt) => {
         console.debug({http_error: xhr});
@@ -47,9 +43,9 @@ export class spa_util_http {
           opt.url = require.toUrl(opt.url!.slice(1));
         }
         if(!opt.crossDomain) {
-          xhr.setRequestHeader('x-lyt-client-id', client_id);
           if(opt.method !== 'GET' && opt.method !== 'HEAD') {
-            let token = spa_util_http.get_xsrf_token();
+            let m = xsrf_token_pattern.exec(window.document.cookie);
+            let token = m && m.length > 1 ? m[1] : undefined;
             if(token) {
               xhr.setRequestHeader(xsrf_token_header, token);
             }
