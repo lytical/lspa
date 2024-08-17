@@ -9,7 +9,7 @@ function failed(ex: Error) {
   console.error(ex);
 }
 
-function lspa_boot(app_path = '@lytical/lspa/app', requirejs_cfg_path = '/api/spa/requirejs-cfg', version = '0.0.5') {
+function lspa_boot(app_path = '@lytical/lspa/app', requirejs_cfg_path = '/api/spa/requirejs-cfg', version = '0.0.6') {
   require([requirejs_cfg_path], (cfg: any) => {
     requirejs.config(cfg);
     require([app_path], (mod: {default: {boot: Function}}) => {
