@@ -20,14 +20,15 @@ const _exec = _util.promisify(_cp.exec);
 const build_file_nm = 'build.js';
 const bundle_nm = 'html';
 const bundle_file_nm = `${bundle_nm}.js`;
+const exclude = ['.dist', '.stage', '.vscode', '.obj', 'node_modules'].map(x => _path.join('/', x, '/'));
 
-const bundle_html = async () => {
-  const paths = (await get_files('.', ent =>
-    (ent.isFile() && _path.parse(ent.name).ext === '.html') ||
-    (ent.isDirectory() && ent.name !== '.git' && ent.name !== '.dist' && ent.name !== '.stage' && ent.name !== '.vscode' && ent.name !== '.obj' && ent.name !== 'node_modules')))
-    .filter(x => !x.endsWith('/index.html'));
+exports.bundle_html = async () => {
+  const paths = (await get_files('.', ent => ent.isFile() &&
+    ent.name.endsWith('.html') &&
+    ent.name !== 'index.html' &&
+    exclude.every(x => ent.parentPath.indexOf(x) === -1)));
   await _fs.writeFile(bundle_file_nm, 'require([' + paths.map(x => `'text!${x}'`).join(',') + '],function(){});');
-  await _fs.writeFile(build_file_nm, `({name:"${bundle_nm}",out:"../.dist/html.js",baseUrl:".",paths:{text:"node_modules/requirejs-text/text"}})`);
+  await _fs.writeFile(build_file_nm, `({name:"${bundle_nm}",out:"../.dist/@lytical/lspa/html.js",baseUrl:".",paths:{text:"node_modules/requirejs-text/text"}})`);
   try {
     await exec('node node_modules/requirejs/bin/r.js -o ' + build_file_nm);
   }
@@ -48,17 +49,12 @@ const exec = async (cmd, is_verbose) => {
   return rt;
 }
 
-const get_files = async (dir, predicate) => {
+const get_files = async (dir, predicate, recursive = true) => {
   let rt = [];
-  for(let path of await _fs.readdir(dir, { withFileTypes: true })) {
-    if(predicate(path)) {
-      if(path.isFile()) {
-        rt.push(dir === '.' ? path.name : dir + '/' + path.name);
-      }
-      else if(path.isDirectory()) {
-        rt = rt.concat(await get_files(dir === '.' ? path.name : dir + '/' + path.name, predicate));
-      }
-    }
+  for(let ent of await _fs.readdir(_path.resolve(dir), { withFileTypes: true, recursive })) {
+    if(predicate(ent)) {
+      rt.push(_path.relative('.', _path.join(ent.parentPath, ent.name)).replace(/\\/g, '/'));
+    }    
   }
   return rt;
 }
@@ -77,12 +73,13 @@ exports.pre_build = async () => {
 
 exports.post_build = _gulp.series(
   _gulp.parallel
-  (
-    done => _pump(_gulp.src(['package.json', 'README.md', '@lytical/lspa/**/*.{ico,gif,jpg,jpeg,png,svg,md,css}', '!node_modules/**']), _gulp.dest('../.dist'), done),
-    done => _pump(_gulp.src('../.dist/**/*.js', { dot: true }), _uglify({ mangle: { keep_fnames: true }, output: { comments: 'some' } }), _gulp.dest('../.dist'), done),
-    bundle_html
+    (
+      done => _pump(_gulp.src(['package.json', 'README.md', '@lytical/lspa/**/*.{ico,gif,jpg,jpeg,png,svg,md,css}', '!node_modules/**']), _gulp.dest('../.dist/@lytical/lspa'), done),
+      done => _pump(_gulp.src('../.dist/@lytical/lspa/**/*.js', { dot: true }), _uglify({ mangle: { keep_fnames: true }, output: { comments: 'some' } }), _gulp.dest('../.dist/@lytical/lspa'), done),
+      exports.bundle_html
     ),
-  done => _pump(_gulp.src(['../.dist/index.js', '../.dist/html.js'], { dot: true }), _concat('index.js'), _gulp.dest('../.dist'), done),
-  done => _pump(_gulp.src(['package.json', 'README.md', '@lytical/lspa/**/*.{ico,gif,jpg,jpeg,png,svg,md,css}', '!node_modules/**']), _gulp.dest('../.dist'), done),
-  done => { _del(['../.dist/*.{map,tsbuildinfo}', `../.dist/${bundle_file_nm}`], { force: true }); done() }
+  done => _pump(_gulp.src(['./node_modules/@lytical/lmvc/index.js', '../.dist/@lytical/lspa/index.js', '../.dist/@lytical/lspa/html.js'], { dot: true }), _concat('index.js'), _gulp.dest('../.dist/@lytical/lspa'), done),
+  done => _pump(_gulp.src(['../.dist/@lytical/lspa/index.d.ts', './node_modules/@lytical/lmvc/index.d.ts'], { dot: true }), _concat('index.d.ts'), _gulp.dest('../.dist/@lytical/lspa'), done),
+  done => _pump(_gulp.src(['package.json', 'README.md', '@lytical/lspa/**/*.{ico,gif,jpg,jpeg,png,svg,md,css}', '!node_modules/**']), _gulp.dest('../.dist/@lytical/lspa'), done),
+  done => { _del(['../.dist/@lytical/lspa/*.{map,tsbuildinfo}', `../.dist/@lytical/lspa/${bundle_file_nm}`], { force: true }); done() }
 );

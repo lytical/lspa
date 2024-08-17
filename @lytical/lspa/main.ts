@@ -9,15 +9,15 @@ function failed(ex: Error) {
   console.error(ex);
 }
 
-function lspa_boot(version = '0.0.5') {
-  require(['/api/spa/requirejs-cfg'], (cfg: any) => {
+function lspa_boot(app_path = '@lytical/lspa/app', requirejs_cfg_path = '/api/spa/requirejs-cfg', version = '0.0.5') {
+  require([requirejs_cfg_path], (cfg: any) => {
     requirejs.config(cfg);
-    require(['@lytical/lspa/app'], (boot: Function) => {
+    require([app_path], (mod: {default: {boot: Function}}) => {
       console.info(`(c) ${new Date(Date.now()).getFullYear()} lytical, inc. all rights are reserved.
 lytical(r) is a registered trademark of lytical, inc.
 powered by lytical enterprise solutions(tm). https://www.lytical.com
 lytical spa version ${version}`);
-      boot(version);
+      mod.default.boot(version);
 }, failed);
   }, failed);
 }
